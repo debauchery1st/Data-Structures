@@ -1,7 +1,7 @@
 """
-Binary search trees are a data structure that enforce an ordering over 
-the data they store. That ordering in turn makes it a lot more efficient 
-at searching for a particular piece of data in the tree. 
+Binary search trees are a data structure that enforce an ordering over
+the data they store. That ordering in turn makes it a lot more efficient
+at searching for a particular piece of data in the tree.
 
 This part of the project comprises two days:
 1. Implement the methods `insert`, `contains`, `get_max`, and `for_each`
@@ -9,6 +9,31 @@ This part of the project comprises two days:
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
 """
+
+
+class Queue:
+    def __init__(self):
+        self.size = 0
+        self.storage = []
+
+    def __len__(self):
+        return self.size
+
+    def enqueue(self, value):
+        """
+        add to head
+        """
+        if value:
+            self.storage.insert(0, value)
+            self.size += 1
+
+    def dequeue(self):
+        """
+        remove from tail
+        """
+        if self.size > 0:
+            self.size -= 1
+            return self.storage.pop()
 
 
 class BinarySearchTree:
@@ -37,7 +62,7 @@ class BinarySearchTree:
                 self.right = BinarySearchTree(value)
             else:
                 self.right.insert(value)
-            return self
+        return self
 
     # Return True if the tree contains the value
     # False if it does not
@@ -86,29 +111,42 @@ class BinarySearchTree:
     # in an iterative breadth first traversal
 
     def bft_print(self, node):
-        # node is parent
-        print(node.value)
-        # parent left, parent right,
-        if node.left:
-            self.left.bft_print(node.left)
-        if node.right:
-            self.right = node.right
-            self.right.bft_print(node.right)
-        # left child.bft, right child.bft
-
-    # Print the value of every node, starting with the given node,
-    # in an iterative depth first traversal
+        # FIFO
+        # (counter-clockwise spiral)
+        q = Queue()
+        q.enqueue(node)
+        while len(q) > 0:
+            cur = q.dequeue()
+            if cur.left:
+                q.enqueue(cur.left)
+            if cur.right:
+                q.enqueue(cur.right)
+            print(cur.value)
+        # Print the value of every node, starting with the given node,
+        # in an iterative depth first traversal
 
     def dft_print(self, node):
-        pass
+        print(self.value)
+        if self.left:
+            self.left.dft_print(node)
+        if self.right:
+            self.right.dft_print(node)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
 
     # Print Pre-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+        print(self.value)
+        if self.left:
+            self.left.pre_order_dft(node)
+        if self.right:
+            self.right.pre_order_dft(node)
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
+        if self.left:
+            self.left.for_each(print)
+        if self.right:
+            self.right.for_each(print)
+        print(self.value)
