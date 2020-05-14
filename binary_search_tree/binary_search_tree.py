@@ -19,21 +19,25 @@ class BinarySearchTree:
 
     # Insert the given value into the tree
     def insert(self, value):
-        bst = BinarySearchTree(value)
         if value > self.value:
             # we head right
             if self.right:
                 self.right.insert(value)
             else:
-                self.right = bst
+                self.right = BinarySearchTree(value)
         elif value < self.value:
             # we head left
             if self.left:
                 self.left.insert(value)
             else:
-                self.left = bst
+                self.left = BinarySearchTree(value)
         elif value == self.value:
-            return value
+            # duplicates
+            if not self.right:
+                self.right = BinarySearchTree(value)
+            else:
+                self.right.insert(value)
+            return self
 
     # Return True if the tree contains the value
     # False if it does not
@@ -71,15 +75,30 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        if self.left:
+            # depth first
+            self.left.in_order_print(node)
+        print(self.value)
+        if self.right:
+            self.right.in_order_print(node)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+
     def bft_print(self, node):
-        pass
+        # node is parent
+        print(node.value)
+        # parent left, parent right,
+        if node.left:
+            self.left.bft_print(node.left)
+        if node.right:
+            self.right = node.right
+            self.right.bft_print(node.right)
+        # left child.bft, right child.bft
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
+
     def dft_print(self, node):
         pass
 
